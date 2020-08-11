@@ -17,9 +17,16 @@ class ItemCard extends Component {
         <Row style={{ marginTop: '10px' }}>
           <Col span={12}>{this.props.price}</Col>
           <Col span={12}>
-            <Button type={'primary'} size={'small'}>
+            <Button
+              type={'primary'}
+              size={'small'}
+              onClick={this.props.addItem({
+                name: this.props.name,
+                price: this.props.price,
+              })}
+            >
               add to cart
-            </Button>{' '}
+            </Button>
           </Col>
         </Row>
       </div>
@@ -30,6 +37,7 @@ class ItemCard extends Component {
 ItemCard.propTypes = {
   name: PropTypes.string,
   price: PropTypes.string,
+  addItem: PropTypes.func,
 };
 
 export default ItemCard;

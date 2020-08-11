@@ -22,7 +22,8 @@ class Category extends Component {
                 <ItemCard
                   name={item.name}
                   price={item.price}
-                  key={item.index}
+                  addItem={(o) => () => this.props.addItem(o)}
+                  key={item.name}
                 />
               )}
             />
@@ -36,6 +37,7 @@ class Category extends Component {
 Category.propTypes = {
   name: PropTypes.string,
   list: PropTypes.array,
+  addItem: PropTypes.func,
 };
 
 export default Category;

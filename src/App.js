@@ -20,11 +20,16 @@ class App extends Component {
     data: {},
   };
 
+  addToCart = (item) => {
+    this.setState({
+      cartList: [...this.state.cartList, item],
+    });
+  };
+
   fetchData = async () => {
     try {
       const response = await axios.get('http://localhost:3000/products');
       if (response.status === 200) {
-        let i = 0;
         response.data.forEach((o) => {
           if (
             !Object.prototype.hasOwnProperty.call(this.state.data, o.category)
@@ -34,12 +39,10 @@ class App extends Component {
           this.state.data[o.category].push({
             name: o.name,
             price: o.price,
-            key: i,
           });
           this.setState({
             isLoaded: true,
           });
-          i++;
         });
       } else {
         message.error('数据获取错误');
@@ -53,14 +56,15 @@ class App extends Component {
   render() {
     const categories = [];
     for (const [key, value] of Object.entries(this.state.data)) {
-      categories.push(<Category name={key} list={value} />);
+      categories.push(
+        <Category name={key} list={value} addItem={this.addToCart} key={key} />
+      );
     }
-    console.log(categories);
     if (!this.state.isLoaded) {
       return (
         <main className="app">
           <Header style={{ background: '#416aff' }}>
-            <MyHeader />
+            <MyHeader cartCount={0} />
           </Header>
           <Content>
             <Skeleton active />
@@ -71,7 +75,7 @@ class App extends Component {
       return (
         <main className="app">
           <Header style={{ background: '#416aff' }}>
-            <MyHeader />
+            <MyHeader cartCount={this.state.cartList.length} />
           </Header>
           <Content>{categories}</Content>
         </main>
